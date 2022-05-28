@@ -24,7 +24,7 @@ Concurrency | Single-core idleness
 ------- | ------- | ------- | ------- | -------
 Parallelism | Multithreading | Thread | `T: Send` | Do work simultaneously on different threads
 Concurrency | Single-threaded concurrency | Future | `Future` | Futures run concurrently on the same thread
-Concurrency+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; task may run on the current thread, or it may be sent to a different thread
+Concurrency+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread
 
 ## Futures
 
