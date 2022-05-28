@@ -118,3 +118,4 @@ Runtime | Description
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/intro.html)
 - [Tokio tutorial](https://tokio.rs/tokio/tutorial)
 - [Tokio's work-stealing scheduler](https://tokio.rs/blog/2019-10-scheduler#schedulers-how-do-they-work)
+- [Actix user guide](https://actix.rs/book/actix/)
