@@ -104,7 +104,7 @@ thread pool with work-stealing strategy | actor framework
 
 **Executor**: Runs asynchronous tasks.
 
-**[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations
+**[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations.
 
 ## References
 
