@@ -66,7 +66,7 @@ Share state between threads: shared-memory `Mutex` or communicate via channels
 Type | `Send` | `Sync`
 ------- | ------- | ------- |
 `Rc<T>` | No | No
-`Arc<T>` | Yes | No
+`Arc<T>` | Yes | Yes
 `Mutex<T>` | Yes | Yes
 
 ## Concurreny models
@@ -100,6 +100,8 @@ thread pool with work-stealing strategy | actor framework
 **Mutex** (mutual exclusion): Shares data between threads.
 
 **Executor**: Runs asynchronous tasks.
+
+**[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations
 
 ## References
 
