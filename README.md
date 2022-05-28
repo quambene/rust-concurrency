@@ -109,6 +109,8 @@ Runtime | Description
 
 **Executor**: Runs asynchronous tasks.
 
+**Generator**: Used internally by the compiler. Can stop (or *yield*) its execution and resume (`poll`) afterwards from its last yield point by inspecting the previously stored state in `self`.
+
 **[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations.
 
 ## References
