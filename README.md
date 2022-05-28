@@ -67,20 +67,25 @@ Share state between threads:
 - `Sync`: safe to share between threads
 
 Type | `Send` | `Sync`
-------- | ------- | ------- |
+------- | ------- | -------
 `Rc<T>` | No | No
 `Arc<T>` | Yes | Yes
 `Mutex<T>` | Yes | Yes
 
 ## Concurreny models
 
-- shared memory
-- worker pools
-- actors
+Model | Description
+------- | -------
+shared memory | threads operate on regions of shared memory
+worker pools | many identical threads receive jobs from a shared job queue
+actors | many different job queues, one for each actor; actors communicate exclusively by exchanging messages
 
-Tokio (multithreaded) | Actix
------------- | -------------
-thread pool with work-stealing strategy | actor framework
+Runtime | Description
+------- | -------
+[tokio](https://crates.io/crates/tokio) (multithreaded) | thread pool with work-stealing scheduler: each processor maintains its own run queue; idle processor checks sibling processor run queues, and attempts to steal tasks from them
+[actix_rt](https://docs.rs/actix-rt/latest/actix_rt/) | single-threaded async runtime; futures are `!Send`
+[actix](https://crates.io/crates/actix) | actor framework
+[actix-web](https://crates.io/crates/actix-web) | constructs an application instance for each thread; application data must be constructed multiple times or shared between threads
 
 ## Terminology
 
@@ -112,3 +117,4 @@ thread pool with work-stealing strategy | actor framework
 - Jon Gjengset, Rust for Rustaceans
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/intro.html)
 - [Tokio tutorial](https://tokio.rs/tokio/tutorial)
+- [Tokio's work-stealing scheduler](https://tokio.rs/blog/2019-10-scheduler#schedulers-how-do-they-work)
