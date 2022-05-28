@@ -56,7 +56,10 @@ spawning | `std::thread::spawn` | `async_std::task::spawn`, `tokio::task::spawn`
 channel | `std::sync::mpsc` (`Send`), `crossbeam::channel` (`Send`, `Sync`) | `tokio::sync::mpsc`, `tokio::sync::oneshot`, `tokio::sync::broadcast`, `tokio::sync::watch`, `async_channel::unbounded()`, `async_channel::bounded()`
 mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
 
-Share state between threads: shared-memory `Mutex` or communicate via channels
+Share state between threads:
+
+- shared-memory data type like `Mutex`, or
+- communicate via channels
 
 ## Thread-safety and marker traits
 
