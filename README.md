@@ -89,6 +89,8 @@ Runtime | Description
 
 ## Terminology
 
+**Marker trait**: Used to give the compiler certain guarantees (see `std::marker`).
+
 **[Data race](https://doc.rust-lang.org/nomicon/races.html)**: Two or more threads concurrently accessing a location of memory; one or more of them is a write; one or more of them is unsynchronized.
 
 **Thread**: A native OS thread.
