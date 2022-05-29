@@ -45,8 +45,8 @@ pub enum Poll<T> {
 - `Pin` the memory location because the future contains self-referential data
 - `Context` contains the `Waker` to notify the *executor* that progress can be made
 - async/await on futures is implemented by *generators*
-- calling `.await` attempts to resolve the `Future`: if the `Future` is blocked, it yields control; if progress can be made, the `Future` resumes
 - `async fn` and `async` blocks return `impl Future<Output = T>`
+- calling `.await` attempts to resolve the `Future`: if the `Future` is blocked, it yields control; if progress can be made, the `Future` resumes
 
 Futures form a tree of futures. The leaf futures commmunicate with the executor. The root future of a tree is called a *task*.
 
