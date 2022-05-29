@@ -40,11 +40,13 @@ pub enum Poll<T> {
 }
 ```
 
-- `Future` has to be `poll`ed (by the *runtime*) to resume where it last yielded and make progress (async is *lazy*)
+- `Future` has to be `poll`ed (by the *executor*) to resume where it last yielded and make progress (async is *lazy*)
 - `&mut Self` contains state (state machine)
 - `Pin` the memory location because the future contains self-referential data
 - `Context` contains the `Waker` to notify the *executor* that progress can be made
 - async/await on futures is implemented by *generators*
+- calling `.await` attempts to resolve the `Future`: if the `Future` is blocked, it yields control; if progress can be made, the `Future` resumes
+- `async fn` and `async` blocks return `impl Future<Output = T>`
 
 Futures form a tree of futures. The leaf futures commmunicate with the executor. The root future of a tree is called a *task*.
 
@@ -113,6 +115,8 @@ Runtime | Description
 
 **Generator**: Used internally by the compiler. Can stop (or *yield*) its execution and resume (`poll`) afterwards from its last yield point by inspecting the previously stored state in `self`.
 
+**`poll`ing**: Attempts to resolve the future into a final value.
+
 **[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations.
 
 ## References
@@ -120,6 +124,7 @@ Runtime | Description
 - Steve Klabnik and Carol Nichols, [The Rust Programming Language](https://doc.rust-lang.org/book/)
 - Jon Gjengset, Rust for Rustaceans
 - [The Rustonomicon](https://doc.rust-lang.org/nomicon/intro.html)
+- [Asynchronous Programming in Rust](https://rust-lang.github.io/async-book/)
 - [Tokio tutorial](https://tokio.rs/tokio/tutorial)
 - [Tokio's work-stealing scheduler](https://tokio.rs/blog/2019-10-scheduler#schedulers-how-do-they-work)
 - [Actix user guide](https://actix.rs/book/actix/)
