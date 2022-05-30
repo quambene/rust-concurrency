@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # Rust Concurrency Cheat Sheet
 
 - [Safety](#safety)
@@ -24,7 +26,7 @@ Concurrency | Single-core idleness
 ------- | ------- | ------- | ------- | ------- | -------
 Parallelism | Multithreading | Thread | `T: Send` | Do work simultaneously on different threads | [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html)
 Concurrency | Single-threaded concurrency | Future | `Future` | Futures run concurrently on the same thread | [`futures::future::join`](https://docs.rs/futures/latest/futures/future/fn.join.html), [`futures::join`](https://docs.rs/futures/latest/futures/macro.join.html)
-Concurrency+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`tokio::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
+Concurrency<br>+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`tokio::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
 
 ## Futures
 
