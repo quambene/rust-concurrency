@@ -101,6 +101,8 @@ Runtime | Description
 
 **[Green threads (or virtual threads)](https://en.wikipedia.org/wiki/Green_threads)**: Threads that are scheduled by a runtime library or virtual machine (VM) instead of natively by the underlying operating system (OS).
 
+[**Context switch**](https://en.wikipedia.org/wiki/Context_switch): The process of storing the state of a process or thread, so that it can be restored and resume execution at a later point.
+
 **Future** (cf. promise): A single value produced asynchronously.
 
 **Stream**: A series of values produced asynchronously.
