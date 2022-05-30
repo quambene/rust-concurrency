@@ -45,7 +45,7 @@ pub enum Poll<T> {
 - `Future` has to be `poll`ed (by the *executor*) to resume where it last yielded and make progress (async is *lazy*)
 - `&mut Self` contains state (state machine)
 - `Pin` the memory location because the future contains self-referential data
-- `Context` contains the `Waker` to notify the *executor* that progress can be made
+- `Context` contains the `Waker` to notify the executor that progress can be made
 - async/await on futures is implemented by *generators*
 - `async fn` and `async` blocks return `impl Future<Output = T>`
 - calling `.await` attempts to resolve the `Future`: if the `Future` is blocked, it yields control; if progress can be made, the `Future` resumes
