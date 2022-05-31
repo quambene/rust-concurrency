@@ -6,7 +6,7 @@
 - [Overview](#overview)
 - [Futures](#futures)
 - [Share state](#share-state)
-- [Thread-safety and marker traits](#thread-safety-and-marker-traits)
+- [Marker traits](#marker-traits)
 - [Concurreny models](#concurreny-models)
 - [Terminology](#terminology)
 - [References](#references)
@@ -59,7 +59,7 @@ Futures form a tree of futures. The leaf futures commmunicate with the executor.
 channel | `std::sync::mpsc` (`Send`), `crossbeam::channel` (`Send`, `Sync`) | `tokio::sync::mpsc`, `tokio::sync::oneshot`, `tokio::sync::broadcast`, `tokio::sync::watch`, `async_channel::unbounded`, `async_channel::bounded`
 mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
 
-## Thread-safety and marker traits
+## Marker traits
 
 - `Send`: safe to send it to another thread
 - `Sync`: safe to share between threads
