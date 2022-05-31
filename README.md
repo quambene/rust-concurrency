@@ -109,9 +109,9 @@ Runtime | Description
 
 **Task**: An asynchronous green thread.
 
-**Channel**: Enables communication between threads.
+**Channel**: Enables communication between threads or tasks.
 
-**Mutex** (mutual exclusion): Shares data between threads.
+**Mutex** (mutual exclusion): Shares data between threads or tasks.
 
 **Executor**: Runs asynchronous tasks.
 
