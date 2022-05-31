@@ -5,7 +5,7 @@
 - [Safety](#safety)
 - [Overview](#overview)
 - [Futures](#futures)
-- [Threads and tasks](#threads-and-tasks)
+- [Share state between threads and tasks](#threads-and-tasks)
 - [Thread-safety and marker traits](#thread-safety-and-marker-traits)
 - [Concurreny models](#concurreny-models)
 - [Terminology](#terminology)
@@ -26,7 +26,7 @@ Concurrency | Single-core idleness
 ------- | ------- | ------- | ------- | ------- | -------
 Parallelism | Multithreading | Thread | `T: Send` | Do work simultaneously on different threads | [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html)
 Concurrency | Single-threaded concurrency | Future | `Future` | Futures run concurrently on the same thread | [`futures::future::join`](https://docs.rs/futures/latest/futures/future/fn.join.html), [`futures::join`](https://docs.rs/futures/latest/futures/macro.join.html)
-Concurrency<br>+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`tokio::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
+Concurrency<br>+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`async_std::task::spawn`](https://docs.rs/async-std/latest/async_std/task/fn.spawn.html), [`tokio::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
 
 ## Futures
 
@@ -52,18 +52,12 @@ pub enum Poll<T> {
 
 Futures form a tree of futures. The leaf futures commmunicate with the executor. The root future of a tree is called a *task*.
 
-## Threads and tasks
+## Share state between threads and tasks
 
-&nbsp; | sync (blocking) | async (non-blocking)
+&nbsp; | Threads | Tasks
 ------- | ------- | -------
-spawning | `std::thread::spawn` | `async_std::task::spawn`, `tokio::task::spawn`
-channel | `std::sync::mpsc` (`Send`), `crossbeam::channel` (`Send`, `Sync`) | `tokio::sync::mpsc`, `tokio::sync::oneshot`, `tokio::sync::broadcast`, `tokio::sync::watch`, `async_channel::unbounded()`, `async_channel::bounded()`
+channel | `std::sync::mpsc` (`Send`), `crossbeam::channel` (`Send`, `Sync`) | `tokio::sync::mpsc`, `tokio::sync::oneshot`, `tokio::sync::broadcast`, `tokio::sync::watch`, `async_channel::unbounded`, `async_channel::bounded`
 mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
-
-Share state between threads:
-
-- shared-memory data type like `Mutex`, or
-- communicate via channels
 
 ## Thread-safety and marker traits
 
@@ -102,6 +96,10 @@ Runtime | Description
 **[Green threads (or virtual threads)](https://en.wikipedia.org/wiki/Green_threads)**: Threads that are scheduled by a runtime library or virtual machine (VM) instead of natively by the underlying operating system (OS).
 
 [**Context switch**](https://en.wikipedia.org/wiki/Context_switch): The process of storing the state of a process or thread, so that it can be restored and resume execution at a later point.
+
+**Synchronous I/O**: blocking I/O.
+
+**Asynchronous I/O**: non-blocking I/O.
 
 **Future** (cf. promise): A single value produced asynchronously.
 
