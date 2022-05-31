@@ -5,7 +5,7 @@
 - [Safety](#safety)
 - [Overview](#overview)
 - [Futures](#futures)
-- [Share state between threads and tasks](#threads-and-tasks)
+- [Share state](#share-state)
 - [Thread-safety and marker traits](#thread-safety-and-marker-traits)
 - [Concurreny models](#concurreny-models)
 - [Terminology](#terminology)
@@ -52,7 +52,7 @@ pub enum Poll<T> {
 
 Futures form a tree of futures. The leaf futures commmunicate with the executor. The root future of a tree is called a *task*.
 
-## Share state between threads and tasks
+## Share state
 
 &nbsp; | Threads | Tasks
 ------- | ------- | -------
