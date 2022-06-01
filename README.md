@@ -7,7 +7,7 @@
 - [Futures](#futures)
 - [Share state](#share-state)
 - [Marker traits](#marker-traits)
-- [Concurreny models](#concurreny-models)
+- [Concurrency models](#concurrency-models)
 - [Terminology](#terminology)
 - [References](#references)
 
@@ -70,7 +70,7 @@ Type | `Send` | `Sync`
 `Arc<T>` | Yes | Yes
 `Mutex<T>` | Yes | Yes
 
-## Concurreny models
+## Concurrency models
 
 Model | Description
 ------- | -------
