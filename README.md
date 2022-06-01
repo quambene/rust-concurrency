@@ -7,7 +7,7 @@
 - [Futures](#futures)
 - [Share state](#share-state)
 - [Marker traits](#marker-traits)
-- [Concurreny models](#concurreny-models)
+- [Concurrency models](#concurrency-models)
 - [Terminology](#terminology)
 - [References](#references)
 
