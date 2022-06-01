@@ -70,7 +70,7 @@ Type | `Send` | `Sync`
 `Arc<T>` | Yes | Yes
 `Mutex<T>` | Yes | Yes
 
-## Concurreny models
+## Concurrency models
 
 Model | Description
 ------- | -------
