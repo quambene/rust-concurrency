@@ -118,6 +118,10 @@ Runtime | Description
 
 **Generator**: Used internally by the compiler. Can stop (or *yield*) its execution and resume (`poll`) afterwards from its last yield point by inspecting the previously stored state in `self`.
 
+**Reactor**: Leaf futures register event sources with the *reactor*.
+
+**Runtime**: Bundles a reactor and an executor.
+
 **`poll`ing**: Attempts to resolve the future into a final value.
 
 **[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations.
