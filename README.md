@@ -67,8 +67,9 @@ mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
 Type | `Send` | `Sync`
 ------- | ------- | -------
 `Rc<T>` | No | No
-`Arc<T>` | Yes | Yes
-`Mutex<T>` | Yes | Yes
+`Arc<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`)
+`Mutex<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send`)
+`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`)
 
 ## Concurrency models
 
