@@ -69,7 +69,7 @@ Type | `Send` | `Sync`
 `Rc<T>` | No | No
 `Arc<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`)
 `Mutex<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send`)
-`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`)
+`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send` and `Sync`)
 
 ## Concurrency models
 
