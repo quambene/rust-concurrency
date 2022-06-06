@@ -88,9 +88,15 @@ Runtime | Description
 
 ## Terminology
 
-**Marker trait**: Used to give the compiler certain guarantees (see [`std::marker`](https://doc.rust-lang.org/std/marker/index.html)).
-
 **[Data race](https://doc.rust-lang.org/nomicon/races.html)**: Two or more threads concurrently accessing a location of memory; one or more of them is a write; one or more of them is unsynchronized.
+
+**[Race condition](https://en.wikipedia.org/wiki/Race_condition)**: The condition of a software system where the system's substantive behavior is dependent on the sequence or timing of other uncontrollable events.
+
+**[Deadlock](https://en.wikipedia.org/wiki/Deadlock)**: Any situation in which no member of some group of entities can proceed because each waits for another member, including itself, to take action.
+
+**[Heisenbug](https://en.wikipedia.org/wiki/Heisenbug)**: A heisenbug is a software bug that seems to disappear or alter its behavior when one attempts to study it. For example, time-sensitive bugs such as race conditions may not occur when the program is slowed down by single-stepping source lines in the debugger.
+
+**Marker trait**: Used to give the compiler certain guarantees (see [`std::marker`](https://doc.rust-lang.org/std/marker/index.html)).
 
 **Thread**: A native OS thread.
 
