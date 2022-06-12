@@ -92,6 +92,14 @@ Runtime | Description
 
 ## Terminology
 
+**Shared reference**: An immutable reference (`&T`); can be copied/cloned.
+
+**Exclusive reference**: An mutable reference (`&mut T`); cannot be copied/cloned.
+
+**Aliasing**: Having several immutable references.
+
+**Mutability**: Having one mutable reference.
+
 **[Data race](https://doc.rust-lang.org/nomicon/races.html)**: Two or more threads concurrently accessing a location of memory; one or more of them is a write; one or more of them is unsynchronized.
 
 **[Race condition](https://en.wikipedia.org/wiki/Race_condition)**: The condition of a software system where the system's substantive behavior is dependent on the sequence or timing of other uncontrollable events.
