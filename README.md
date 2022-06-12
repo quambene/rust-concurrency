@@ -62,14 +62,18 @@ mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
 ## Marker traits
 
 - `Send`: safe to send it to another thread
-- `Sync`: safe to share between threads
+- `Sync`: safe to share between threads (`T` is `Sync` if and only if `&T` is `Send`)
 
-Type | `Send` | `Sync`
-------- | ------- | -------
-`Rc<T>` | No | No
-`Arc<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`)
-`Mutex<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send`)
-`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send` and `Sync`)
+Type | `Send` | `Sync` | Owners | Interior mutability
+------- | ------- | ------- | ------- | -------
+`Rc<T>` | No | No | multiple | No
+`Arc<T>` | Yes (if `T` is `Send` and `Sync`) | Yes (if `T` is `Send` and `Sync`) | multiple | No
+`Box<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`) | single | No
+`Mutex<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send`) | single | Yes
+`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send` and `Sync`) | single | Yes
+`MutexGuard<'a, T: 'a>` | No | Yes (if `T` is `Sync`) | single | Yes
+`Cell<T>` | Yes (if `T` is `Send` | No | single | Yes
+`RefCell<T>` | Yes (if `T` is `Send`) | No | single | Yes
 
 ## Concurrency models
 
@@ -119,6 +123,8 @@ Runtime | Description
 **Channel**: Enables communication between threads or tasks.
 
 **Mutex** (mutual exclusion): Shares data between threads or tasks.
+
+**Interior mutability**: A design pattern that allows mutating data even when there are immutable references to that data.
 
 **Executor**: Runs asynchronous tasks.
 
