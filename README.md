@@ -94,7 +94,7 @@ Runtime | Description
 
 **Shared reference**: An immutable reference (`&T`); can be copied/cloned.
 
-**Exclusive reference**: An mutable reference (`&mut T`); cannot be copied/cloned.
+**Exclusive reference**: A mutable reference (`&mut T`); cannot be copied/cloned.
 
 **Aliasing**: Having several immutable references.
 
