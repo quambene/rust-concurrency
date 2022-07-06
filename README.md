@@ -59,7 +59,7 @@ Futures form a tree of futures. The leaf futures commmunicate with the executor.
 Computation | Examples
 ------- | -------
 Lightweight (e.g. <100 ms) | [`async_std::task::spawn`](https://docs.rs/async-std/latest/async_std/task/fn.spawn.html), [`tokio::task::spawn`](https://docs.rs/tokio/latest/tokio/task/fn.spawn.html)
-Expensive (e.g. >100 ms or I/O bound) | [`async_std::task::spawn_blocking`](https://docs.rs/async-std/latest/async_std/task/fn.spawn_blocking.html), [`tokio::task::spawn_blocking`](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
+Extensive (e.g. >100 ms or I/O bound) | [`async_std::task::spawn_blocking`](https://docs.rs/async-std/latest/async_std/task/fn.spawn_blocking.html), [`tokio::task::spawn_blocking`](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
 Massive (e.g. running forever or CPU-bound) | [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html)
 
 ## Streams
