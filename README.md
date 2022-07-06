@@ -73,9 +73,9 @@ pub trait Stream {
 }
 ```
 
-- `Stream<Item = T>` is an asynchronous version of `Iterator<Item = T>`, i.e., it does not block between each item yield
+- [`Stream<Item = T>`](https://docs.rs/futures/latest/futures/stream/trait.Stream.html) is an asynchronous version of [`Iterator<Item = T>`](https://doc.rust-lang.org/std/iter/trait.Iterator.html), i.e., it does not block between each item yield
 
-Operation | Relationship | Operations
+Operation | Relationship | Examples
 ------- | ------- | -------
 Create | | [`futures::stream::iter`](https://docs.rs/futures/latest/futures/stream/fn.iter.html), [`futures::stream::once`](https://docs.rs/futures/latest/futures/stream/fn.once.html), [`futures::stream::repeat`](https://docs.rs/futures/latest/futures/stream/fn.repeat.html), [`futures::stream::repeat_with`](https://docs.rs/futures/latest/futures/stream/fn.repeat_with.html), [`async_stream::stream`](https://docs.rs/async-stream/latest/async_stream/macro.stream.html)
 Create (via channels) | | [`futures::channel::mpsc::Receiver`](https://docs.rs/futures/latest/futures/channel/mpsc/struct.Receiver.html), [`tokio_stream::wrappers::ReceiverStream`](https://docs.rs/tokio-stream/latest/tokio_stream/wrappers/struct.ReceiverStream.html)
