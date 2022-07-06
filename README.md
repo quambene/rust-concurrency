@@ -5,6 +5,8 @@
 - [Safety](#safety)
 - [Overview](#overview)
 - [Futures](#futures)
+- [Tasks and threads](#tasks-and-threads)
+- [Streams](#streams)
 - [Share state](#share-state)
 - [Marker traits](#marker-traits)
 - [Concurrency models](#concurrency-models)
@@ -26,7 +28,7 @@ Concurrency | Single-core idleness
 ------- | ------- | ------- | ------- | ------- | -------
 Parallelism | Multithreading | Thread | `T: Send` | Do work simultaneously on different threads | [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html)
 Concurrency | Single-threaded concurrency | Future | `Future` | Futures run concurrently on the same thread | [`futures::future::join`](https://docs.rs/futures/latest/futures/future/fn.join.html), [`futures::join`](https://docs.rs/futures/latest/futures/macro.join.html), [`tokio::join`](https://docs.rs/tokio/latest/tokio/macro.join.html)
-Concurrency<br>+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`async_std::task::spawn`](https://docs.rs/async-std/latest/async_std/task/fn.spawn.html), [`tokio::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
+Concurrency<br>+Parallelism | Multithreaded concurrency | Task | `T: Future + Send` | Tasks run concurrently to other tasks; the task may run on the current thread, or it may be sent to a different thread | [`async_std::task::spawn`](https://docs.rs/async-std/latest/async_std/task/fn.spawn.html), [`tokio::task::spawn`](https://docs.rs/tokio/latest/tokio/fn.spawn.html)
 
 ## Futures
 
@@ -52,28 +54,60 @@ pub enum Poll<T> {
 
 Futures form a tree of futures. The leaf futures commmunicate with the executor. The root future of a tree is called a *task*.
 
+## Tasks and threads
+
+Computation | Examples
+------- | -------
+Lightweight (e.g. <100 ms) | [`async_std::task::spawn`](https://docs.rs/async-std/latest/async_std/task/fn.spawn.html), [`tokio::task::spawn`](https://docs.rs/tokio/latest/tokio/task/fn.spawn.html)
+Expensive (e.g. >100 ms or I/O bound) | [`async_std::task::spawn_blocking`](https://docs.rs/async-std/latest/async_std/task/fn.spawn_blocking.html), [`tokio::task::spawn_blocking`](https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html)
+Massive (e.g. running forever or CPU-bound) | [`std::thread::spawn`](https://doc.rust-lang.org/std/thread/fn.spawn.html)
+
+## Streams
+
+``` rust
+pub trait Stream {
+    type Item;
+    fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>>;
+
+    fn size_hint(&self) -> (usize, Option<usize>) { ... }
+}
+```
+
+- `Stream<Item = T>` is an asynchronous version of `Iterator<Item = T>`, i.e., it does not block between each item yield
+
+Operation | Relationship | Operations
+------- | ------- | -------
+Create | | [`futures::stream::iter`](https://docs.rs/futures/latest/futures/stream/fn.iter.html), [`futures::stream::once`](https://docs.rs/futures/latest/futures/stream/fn.once.html), [`futures::stream::repeat`](https://docs.rs/futures/latest/futures/stream/fn.repeat.html), [`futures::stream::repeat_with`](https://docs.rs/futures/latest/futures/stream/fn.repeat_with.html), [`async_stream::stream`](https://docs.rs/async-stream/latest/async_stream/macro.stream.html)
+Create (via channels) | | [`futures::channel::mpsc::Receiver`](https://docs.rs/futures/latest/futures/channel/mpsc/struct.Receiver.html), [`tokio_stream::wrappers::ReceiverStream`](https://docs.rs/tokio-stream/latest/tokio_stream/wrappers/struct.ReceiverStream.html)
+Looping | | [`futures::stream::StreamExt::next`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.next), [`futures::stream::StreamExt::for_each`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.for_each), [`futures::stream::StreamExt::for_each_concurrent`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.for_each_concurrent)
+Transform | 1-1 | [`futures::stream::StreamExt::map`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.map), [`futures::stream::StreamExt::then`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.then), [`futures::stream::StreamExt::flatten`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.flatten)
+Filter | 1-1 | [`futures::prelude::stream::StreamExt::filter`](https://docs.rs/futures/latest/futures/prelude/stream/trait.StreamExt.html#method.filter), [`futures::prelude::stream::StreamExt::take`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.take), [`futures::prelude::stream::StreamExt::skip`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.skip)
+Buffering | 1-1 | [`futures::prelude::stream::StreamExt::buffered`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.buffered), [`futures::prelude::stream::StreamExt::buffer_unordered`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.buffer_unordered)
+Combine | n-1 | [`futures::stream::StreamExt::chain`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.chain), [`futures::stream::StreamExt::zip`](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.zip), [`tokio_stream::StreamExt::merge`](https://docs.rs/tokio-stream/0.1.9/tokio_stream/trait.StreamExt.html#method.merge), [`tokio_stream::StreamMap`](https://docs.rs/tokio-stream/latest/tokio_stream/struct.StreamMap.html), [`tokio::select`](https://docs.rs/tokio/latest/tokio/macro.select.html)
+Split | 1-n | [`futures::channel::oneshot::Sender::send`](https://docs.rs/futures/latest/futures/channel/oneshot/struct.Sender.html#method.send), [`async_std::channel::Sender::send`](https://docs.rs/async-std/latest/async_std/channel/struct.Sender.html#method.send)
+
 ## Share state
 
 &nbsp; | Threads | Tasks
 ------- | ------- | -------
-channel | `std::sync::mpsc` (`Send`), `crossbeam::channel` (`Send`, `Sync`) | `tokio::sync::mpsc`, `tokio::sync::oneshot`, `tokio::sync::broadcast`, `tokio::sync::watch`, `async_channel::unbounded`, `async_channel::bounded`
-mutex | `std::sync::Mutex` | `tokio::sync::Mutex`
+channel | [`std::sync::mpsc`](https://doc.rust-lang.org/std/sync/mpsc/) (`Send`), [`crossbeam::channel`](https://docs.rs/crossbeam-channel/latest/crossbeam_channel/) (`Send`, `Sync`) | [`tokio::sync::mpsc`](https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html), [`tokio::sync::oneshot`](https://docs.rs/tokio/latest/tokio/sync/oneshot/index.html), [`tokio::sync::broadcast`](https://docs.rs/tokio/latest/tokio/sync/broadcast/index.html), [`tokio::sync::watch`](https://docs.rs/tokio/latest/tokio/sync/watch/index.html), [`async_channel::unbounded`](https://docs.rs/async-channel/latest/async_channel/fn.unbounded.html), [`async_channel::bounded`](https://docs.rs/async-channel/latest/async_channel/fn.bounded.html)
+mutex | [`std::sync::Mutex`](https://doc.rust-lang.org/std/sync/struct.Mutex.html) | [`tokio::sync::Mutex`](https://docs.rs/tokio/latest/tokio/sync/struct.Mutex.html)
 
 ## Marker traits
 
-- `Send`: safe to send it to another thread
-- `Sync`: safe to share between threads (`T` is `Sync` if and only if `&T` is `Send`)
+- [`Send`](https://doc.rust-lang.org/std/marker/trait.Send.html): safe to send it to another thread
+- [`Sync`](https://doc.rust-lang.org/std/marker/trait.Sync.html): safe to share between threads (`T` is `Sync` if and only if `&T` is `Send`)
 
 Type | `Send` | `Sync` | Owners | Interior mutability
 ------- | ------- | ------- | ------- | -------
-`Rc<T>` | No | No | multiple | No
-`Arc<T>` | Yes (if `T` is `Send` and `Sync`) | Yes (if `T` is `Send` and `Sync`) | multiple | No
-`Box<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`) | single | No
-`Mutex<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send`) | single | Yes
-`RwLock<T>` | Yes (if `T` is `Send`) | Yes (if `T` is `Send` and `Sync`) | single | Yes
-`MutexGuard<'a, T: 'a>` | No | Yes (if `T` is `Sync`) | single | Yes
-`Cell<T>` | Yes (if `T` is `Send` | No | single | Yes
-`RefCell<T>` | Yes (if `T` is `Send`) | No | single | Yes
+[`Rc<T>`](https://doc.rust-lang.org/std/rc/struct.Rc.html) | No | No | multiple | No
+[`Arc<T>`](https://doc.rust-lang.org/std/sync/struct.Arc.html) | Yes (if `T` is `Send` and `Sync`) | Yes (if `T` is `Send` and `Sync`) | multiple | No
+[`Box<T>`](https://doc.rust-lang.org/std/boxed/struct.Box.html) | Yes (if `T` is `Send`) | Yes (if `T` is `Sync`) | single | No
+[`Mutex<T>`](https://doc.rust-lang.org/std/sync/struct.Mutex.html) | Yes (if `T` is `Send`) | Yes (if `T` is `Send`) | single | Yes
+[`RwLock<T>`](https://doc.rust-lang.org/std/sync/struct.RwLock.html) | Yes (if `T` is `Send`) | Yes (if `T` is `Send` and `Sync`) | single | Yes
+[`MutexGuard<'a, T: 'a>`](https://doc.rust-lang.org/std/sync/struct.MutexGuard.html) | No | Yes (if `T` is `Sync`) | single | Yes
+[`Cell<T>`](https://doc.rust-lang.org/std/cell/struct.Cell.html) | Yes (if `T` is `Send` | No | single | Yes
+[`RefCell<T>`](https://doc.rust-lang.org/std/cell/struct.RefCell.html) | Yes (if `T` is `Send`) | No | single | Yes
 
 ## Concurrency models
 
@@ -145,6 +179,10 @@ Runtime | Description
 **`poll`ing**: Attempts to resolve the future into a final value.
 
 **[io_uring](https://en.wikipedia.org/wiki/Io_uring)**: A Linux kernel system call interface for storage device asynchronous I/O operations.
+
+**[CPU-bound](https://en.wikipedia.org/wiki/CPU-bound)**: Refers to a condition in which the time it takes to complete a computation is determined principally by the speed of the CPU.
+
+**[I/O bound](https://en.wikipedia.org/wiki/I/O_bound)**: Refers to a condition in which the time it takes to complete a computation is determined principally by the period spent waiting for input/output operations to be completed. This is the opposite of a task being CPU bound.
 
 ## References
 
