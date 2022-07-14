@@ -75,6 +75,11 @@ pub trait Stream {
 
 - [`Stream<Item = T>`](https://docs.rs/futures/latest/futures/stream/trait.Stream.html) is an asynchronous version of [`Iterator<Item = T>`](https://doc.rust-lang.org/std/iter/trait.Iterator.html), i.e., it does not block between each item yield
 
+&nbsp; | Parallelism
+------- | -------
+Iterator | [rayon](https://crates.io/crates/rayon)
+Stream | [`tokio::task::spawn`](https://docs.rs/tokio/latest/tokio/task/fn.spawn.html), [parallel-stream](https://crates.io/crates/parallel-stream)
+
 Operation | Relationship | Examples
 ------- | ------- | -------
 Create | | [`futures::stream::iter`](https://docs.rs/futures/latest/futures/stream/fn.iter.html), [`futures::stream::once`](https://docs.rs/futures/latest/futures/stream/fn.once.html), [`futures::stream::repeat`](https://docs.rs/futures/latest/futures/stream/fn.repeat.html), [`futures::stream::repeat_with`](https://docs.rs/futures/latest/futures/stream/fn.repeat_with.html), [`async_stream::stream`](https://docs.rs/async-stream/latest/async_stream/macro.stream.html)
