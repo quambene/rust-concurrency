@@ -78,7 +78,7 @@ pub trait Stream {
 &nbsp; | Parallelism
 ------- | -------
 Iterator | [rayon](https://crates.io/crates/rayon)
-Stream | [`tokio::task::spawn`](https://docs.rs/tokio/latest/tokio/task/fn.spawn.html), [parallel-stream](https://crates.io/crates/parallel-stream)
+Stream | [tokio](https://crates.io/crates/tokio), [parallel-stream](https://crates.io/crates/parallel-stream)
 
 Operation | Relationship | Examples
 ------- | ------- | -------
